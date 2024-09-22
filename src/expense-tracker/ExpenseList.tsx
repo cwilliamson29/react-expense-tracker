@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 
+interface Expense {
+  id: number;
+  description: string;
+  amount: number;
+  category: string;
+}
 interface Props {
-  db: (cat: string[]) => void;
-  removeItem: (name) => void;
-  capitalize: (data: string) => void;
+  expense: Expense[];
+  onDelete: (name) => void;
 }
 
-const ExpenseList = ({ removeItem, db, capitalize }: Props) => {
+const ExpenseList = ({ onDelete, expense }: Props) => {
   return (
     <div>
       <div className="p-4">
@@ -20,16 +25,15 @@ const ExpenseList = ({ removeItem, db, capitalize }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {db.map((data) => {
-              //console.log(data);
+            {expense.map((data) => {
               return (
                 <tr key={data.id}>
                   <td>{data.description}</td>
                   <td>${data.amount}</td>
-                  <td>{capitalize(data.category)}</td>
+                  <td>{data.category}</td>
                   <td>
                     <button
-                      onClick={(e) => removeItem(data.description)}
+                      onClick={() => onDelete(data.description)}
                       className="btn btn-danger"
                     >
                       Delete

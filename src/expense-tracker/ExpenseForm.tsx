@@ -1,28 +1,26 @@
+import categories from "./categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { PropsWithChildren } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface Props {
-  categories: string[];
-  dataFile: string[];
   setData: (data) => void;
-  capitalize: (data) => void;
 }
 
 const schema = z.object({
   description: z.string().min(3),
-  amount: z.number().min(1),
-  category: z.string().min(1),
+  amount: z.number().min(0.01),
+  category: z.enum(categories),
 });
 
 type FormData = z.infer<typeof schema>;
 
-const ExpenseForm = ({ categories, dataFile, setData, capitalize }: Props) => {
+const ExpenseForm = ({ setData }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FieldValues) => {
@@ -66,7 +64,7 @@ const ExpenseForm = ({ categories, dataFile, setData, capitalize }: Props) => {
         <select {...register("category")} className="form-select" id="category">
           {categories.map((data, index) => (
             <option key={index} value={data}>
-              {capitalize(data)}
+              {data}
             </option>
           ))}
         </select>

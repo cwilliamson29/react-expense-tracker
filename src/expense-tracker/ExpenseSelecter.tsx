@@ -1,11 +1,9 @@
 import React from "react";
-
+import categories from "./categories";
 interface Props {
-  categories: string[];
   catSetter: (data: string) => void;
-  capitalize: (data: string) => void;
 }
-const ExpenseSelecter = ({ categories, catSetter, capitalize }: Props) => {
+const ExpenseSelecter = ({ catSetter }: Props) => {
   return (
     <div>
       <select
@@ -17,7 +15,7 @@ const ExpenseSelecter = ({ categories, catSetter, capitalize }: Props) => {
         <option value="all">All Items</option>
         {categories.map((data, index) => (
           <option key={index} value={data}>
-            {capitalize(data)}
+            {data}
           </option>
         ))}
       </select>
