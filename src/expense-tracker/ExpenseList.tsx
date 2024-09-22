@@ -1,51 +1,14 @@
 import React, { useState } from "react";
 
 interface Props {
-  categories: string[];
-  getByCat: (cat) => void;
+  db: (cat: string[]) => void;
   removeItem: (name) => void;
+  capitalize: (data: string) => void;
 }
 
-const ExpenseList = ({ categories, getByCat, removeItem }: Props) => {
-  const [category, setCategory] = useState("all");
-  const [get, setGet] = useState([]);
-
-  const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  //const getter = getByCat(category);
-
-  const handleChange = (e) => {
-    setCategory(e.target.value);
-    const a = getByCat(e.target.value);
-    setGet(a);
-    console.log(getComputedStyle);
-  };
-  const handleDelete = (item) => {
-    removeItem(item);
-    const getter = getByCat(category);
-    setGet(getter);
-    console.log(get);
-  };
-
+const ExpenseList = ({ removeItem, db, capitalize }: Props) => {
   return (
     <div>
-      <div className="p-3">
-        <select
-          className="form-select"
-          id="category"
-          onChange={(e) => handleChange(e)}
-        >
-          <option value="null"></option>
-          <option value="all">All Items</option>
-          {categories.map((data, index) => (
-            <option key={index} value={data}>
-              {capitalize(data)}
-            </option>
-          ))}
-        </select>
-      </div>
       <div className="p-4">
         <table className="table caption-top">
           <thead>
@@ -57,7 +20,7 @@ const ExpenseList = ({ categories, getByCat, removeItem }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {get.map((data) => {
+            {db.map((data) => {
               //console.log(data);
               return (
                 <tr key={data.id}>
@@ -66,7 +29,7 @@ const ExpenseList = ({ categories, getByCat, removeItem }: Props) => {
                   <td>{capitalize(data.category)}</td>
                   <td>
                     <button
-                      onClick={(e) => handleDelete(data.description)}
+                      onClick={(e) => removeItem(data.description)}
                       className="btn btn-danger"
                     >
                       Delete

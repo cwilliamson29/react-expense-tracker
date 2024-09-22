@@ -7,6 +7,7 @@ interface Props {
   categories: string[];
   dataFile: string[];
   setData: (data) => void;
+  capitalize: (data) => void;
 }
 
 const schema = z.object({
@@ -17,7 +18,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const ExpenseTracker = ({ categories, dataFile, setData }: Props) => {
+const ExpenseForm = ({ categories, dataFile, setData, capitalize }: Props) => {
   const {
     register,
     handleSubmit,
@@ -26,10 +27,6 @@ const ExpenseTracker = ({ categories, dataFile, setData }: Props) => {
 
   const onSubmit = (data: FieldValues) => {
     setData(data);
-  };
-
-  const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   return (
@@ -84,4 +81,4 @@ const ExpenseTracker = ({ categories, dataFile, setData }: Props) => {
   );
 };
 
-export default ExpenseTracker;
+export default ExpenseForm;

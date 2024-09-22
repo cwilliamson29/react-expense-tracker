@@ -1,12 +1,17 @@
 import React from "react";
 
-const ExpenseSelecter = () => {
+interface Props {
+  categories: string[];
+  catSetter: (data: string) => void;
+  capitalize: (data: string) => void;
+}
+const ExpenseSelecter = ({ categories, catSetter, capitalize }: Props) => {
   return (
     <div>
       <select
         className="form-select"
         id="category"
-        onChange={(e) => handleChange(e)}
+        onChange={(e) => catSetter(e.target.value)}
       >
         <option value="null"></option>
         <option value="all">All Items</option>
