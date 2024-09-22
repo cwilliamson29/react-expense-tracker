@@ -4,42 +4,33 @@ import Alert from "./components/Alert";
 import Button from "./components/Button";
 import { produce } from "immer";
 import ExpandableText from "./components/ExpandableText";
-import Form from "./components/form";
+//import Form from "./components/form";
+import ExpenseTracker from "./components/ExpenseTracker";
+import ExpenseList from "./components/ExpenseList";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [alertVisible, setAlertVisible] = useState(false);
+  const categories = ["groceries", "utilities", "entertainment"];
+  const [db, setDB] = useState([
+    { id: 1, description: "Eggs", amount: 3.99, category: "groceries" },
+    { id: 2, description: "Bacon", amount: 4.99, category: "groceries" },
+    { id: 3, description: "Water Bill", amount: 65, category: "utilities" },
+    { id: 4, description: "Netflix", amount: 17.99, category: "entertainment" },
+    { id: 5, description: "Power Bill", amount: 265, category: "utilities" },
+  ]);
 
-  let items = ["New York", "San Francisco", "Tokyo", "London", "Paris"];
-
-  const [pizza, setPizza] = useState({
-    name: "Spicy Pepperoni",
-    toppings: ["Mushroom"],
-  });
-
-  const handleClick = () => {
-    setPizza({ ...pizza, toppings: [...pizza.toppings, "Olives"] });
+  const addDB = (data) => {
+    setDB([...db, data]);
+    console.log(db);
+  };
+  const getByCategory = (cat) => {
+    const data = db.find((cat) => data.category === cat);
+    return data;
   };
 
   return (
     <div className="App">
-      <ListGroup items={items} heading={"Cities"} />
-      {alertVisible && (
-        <Alert onClose={() => setAlertVisible(false)}>Hello World</Alert>
-      )}
-      <Button
-        buttonText="Test Button"
-        color="primary"
-        onClick={() => setAlertVisible(true)}
-      />
-
-      <button onClick={handleClick}>Click Me</button>
-
-      <ExpandableText>
-        asd;lkfjas;ldkjf;alksdjf;laksjdf;lakjsdf;lkjasd;lfkjas;ldkfja;lskdjf;laskdjf;lakjsdf;lkajsd;lfkjas;ldkfja;lsdkjf;alskdjf
-      </ExpandableText>
-      <br></br>
-      <Form />
+      <ExpenseTracker categories={categories} dataFile={db} setData={addDB} />
+      <ExpenseList categories={categories} getByCat={getByCategory} />
     </div>
   );
 }
