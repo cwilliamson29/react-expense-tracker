@@ -9,8 +9,14 @@ interface Props {
 }
 
 const schema = z.object({
-  description: z.string().min(3),
-  amount: z.number().min(0.01),
+  description: z
+    .string()
+    .min(3, { message: "Description must be at least 3 characters" })
+    .max(50, { message: "Description must NOT be more than 50 characters" }),
+  amount: z
+    .number({ invalid_type_error: "Amount is required" })
+    .min(0.01, { message: "Amount must be at least $0.01" })
+    .max(100_000, { message: "Amount must NOT be more than $100,000" }),
   category: z.enum(categories),
 });
 
@@ -20,11 +26,13 @@ const ExpenseForm = ({ setData }: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FieldValues) => {
     setData(data);
+    reset()
   };
 
   return (
